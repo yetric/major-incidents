@@ -4,6 +4,31 @@ import { useRouter } from 'next/navigation';
 import { HistoricalEvent } from '@/data/events';
 import { useState } from 'react';
 
+interface TooltipBubbleProps {
+  category: string;
+  color: string;
+  above: boolean;
+}
+
+function TooltipBubble({ category, color, above }: TooltipBubbleProps) {
+  const positionStyle = above
+    ? { bottom: 'calc(100% + 8px)' }
+    : { top: 'calc(100% + 8px)' };
+  return (
+    <div
+      className="absolute left-1/2 -translate-x-1/2 z-50 pointer-events-none"
+      style={positionStyle}
+    >
+      <div
+        className="px-3 py-2 rounded-lg text-xs text-white font-medium shadow-xl whitespace-nowrap"
+        style={{ backgroundColor: color + 'CC' }}
+      >
+        {category}
+      </div>
+    </div>
+  );
+}
+
 interface TimelineProps {
   events: HistoricalEvent[];
 }
@@ -71,17 +96,11 @@ export default function Timeline({ events }: TimelineProps) {
 
               {/* Tooltip on hover */}
               {hoveredId === event.id && (
-                <div
-                  className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 mt-2 z-50 pointer-events-none"
-                  style={{ top: index % 2 === 0 ? 'calc(100% + 8px)' : 'auto', bottom: index % 2 !== 0 ? 'calc(100% + 8px)' : 'auto' }}
-                >
-                  <div
-                    className="px-3 py-2 rounded-lg text-xs text-white font-medium shadow-xl whitespace-nowrap"
-                    style={{ backgroundColor: event.color + 'CC' }}
-                  >
-                    {event.category}
-                  </div>
-                </div>
+                <TooltipBubble
+                  category={event.category}
+                  color={event.color}
+                  above={index % 2 !== 0}
+                />
               )}
             </div>
           ))}
