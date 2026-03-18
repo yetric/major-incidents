@@ -1,8 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import Image from 'next/image';
 import { EventImage } from '@/data/events';
+import FallbackImage from './FallbackImage';
 
 interface MediaGalleryProps {
   images: EventImage[];
@@ -17,7 +17,7 @@ export default function MediaGallery({ images }: MediaGalleryProps) {
     <div className="space-y-4">
       {/* Main image */}
       <div className="relative aspect-video rounded-2xl overflow-hidden bg-gray-800">
-        <Image
+        <FallbackImage
           src={images[selectedIndex].url}
           alt={images[selectedIndex].caption}
           fill
@@ -43,7 +43,7 @@ export default function MediaGallery({ images }: MediaGalleryProps) {
                   : 'border-white/10 opacity-60 hover:opacity-100'
               }`}
             >
-              <Image
+              <FallbackImage
                 src={image.url}
                 alt={image.caption}
                 fill

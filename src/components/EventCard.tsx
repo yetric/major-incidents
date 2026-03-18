@@ -1,7 +1,7 @@
 import Link from 'next/link';
-import Image from 'next/image';
 import { HistoricalEvent } from '@/data/events';
 import { formatDate, getCategoryColor } from '@/lib/utils';
+import FallbackImage from './FallbackImage';
 
 interface EventCardProps {
   event: HistoricalEvent;
@@ -16,12 +16,13 @@ export default function EventCard({ event }: EventCardProps) {
         {/* Image */}
         <div className="relative h-48 overflow-hidden bg-gray-800">
           {event.images.length > 0 ? (
-            <Image
+            <FallbackImage
               src={event.images[0].url}
               alt={event.images[0].caption}
               fill
               className="object-cover group-hover:scale-105 transition-transform duration-500"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              fallbackColor={event.color}
             />
           ) : (
             <div
