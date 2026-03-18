@@ -3,7 +3,7 @@ import EventDetail from '@/components/EventDetail';
 import { notFound } from 'next/navigation';
 
 interface PageProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 export async function generateStaticParams() {
@@ -14,7 +14,8 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: PageProps) {
-  const event = getEventById(params.id);
+  const { id } = await params;
+  const event = getEventById(id);
   if (!event) return { title: 'Event Not Found' };
   return {
     title: `${event.title} — History Unfiltered`,
@@ -22,8 +23,9 @@ export async function generateMetadata({ params }: PageProps) {
   };
 }
 
-export default function EventPage({ params }: PageProps) {
-  const event = getEventById(params.id);
+export default async function EventPage({ params }: PageProps) {
+  const { id } = await params;
+  const event = getEventById(id);
 
   if (!event) {
     notFound();
